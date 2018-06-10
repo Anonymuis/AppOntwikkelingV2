@@ -132,10 +132,12 @@ public class MenuItemSettingsFragment extends Fragment {
         Log.i(TAG, ACTIVITY_NAME + " " + methodName);
 
         super.onResume();
+        if(menuItem.equals("Item0")){
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getUser());
+            return;
+        }
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(menuItem);
-        //switch1.setChecked(switch1State);
-        //switch2.setChecked(switch2State);
-        //switch3.setChecked(switch3Checked);
+
     }
 
     private int getStringId(String menuItem){
@@ -186,5 +188,10 @@ public class MenuItemSettingsFragment extends Fragment {
         prefEditor.putBoolean("switch2State", switch2State);
         prefEditor.putBoolean("switch3State", switch3State);
         prefEditor.apply(); // Submit to file
+    }
+    private String getUser(){
+        SharedPreferences preferences = this.getActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
+        String value = preferences.getString("username", "defaultValue");
+        return value;
     }
 }

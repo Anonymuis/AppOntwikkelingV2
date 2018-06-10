@@ -24,7 +24,7 @@ public class MenuFragment extends Fragment {
     ListView listViewMenu;
     ArrayAdapter<String> menuItemsAdapter;
     Context context;
-    String[] menuItems = {"Item0", "Item0", "Item3", "Item4", "Item5", "Item6", "Item7", "Item8"};
+    String[] menuItems = {"Item0", "Item1", "Item3", "Item4", "Item5", "Item6", "Item7", "Item8"};
 
 
     FragmentActionListener fragmentActionListener;
@@ -89,17 +89,11 @@ public class MenuFragment extends Fragment {
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         Log.i(TAG, ACTIVITY_NAME + " " + methodName);
 
+        if(!getUser().equalsIgnoreCase("defaultValue")){
+            menuItems[0]=getUser();
+        }
+
         context  = getContext();
-
-        /*
-        menuItems = getResources().getStringArray(R.array.menuItems); // Get the list view items from the resources
-        listViewMenu = (ListView)rootView.findViewById(R.id.listViewMenu); // Get reference to list view
-
-        menuItemsAdapter = new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,menuItems);
-        listViewMenu.setAdapter(menuItemsAdapter);
-        */
-        ///*////--- begin
-        // Menu items
 
         menuItemsAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, menuItems);
 
