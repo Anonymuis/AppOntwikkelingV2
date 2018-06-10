@@ -26,7 +26,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "DebugMessage";
+    private static final String TAG = "Message";
+
+    public final String ACTIVITY_NAME = this.getClass().getSimpleName();
 
     EditText editEmail, editPassword, editName;
     Button btnSignIn, btnRegister;
@@ -45,9 +47,14 @@ public class MainActivity extends AppCompatActivity {
         URL = this.getResources().getString(R.string.server_address);
         Log.i(TAG, "MainActivity onCreate");
 
+        boolean stayLoggedIn = getPreference("pref", "stay_logged_in");
+        if(stayLoggedIn && (getPreference("user_info", "username",true))!= null){
+            goToMenu();
+        }
+
         super.onCreate(savedInstanceState); // get saved instance if available
         setContentView(R.layout.activity_main); // Select the XML file for MainActivity
-        waitingForLogin =false;
+        waitingForLogin = false;
         editEmail = (EditText) findViewById(R.id.editEmail); // Get reference to text field
         editName = (EditText) findViewById(R.id.editName); // Get reference to text field
         editPassword = (EditText) findViewById(R.id.editPassword); // Get reference to text field
@@ -59,8 +66,10 @@ public class MainActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
+                Log.i(TAG, ACTIVITY_NAME + " " + methodName);
                 if (!waitingForLogin) {
-                    waitingForLogin = true;
+                    waitingForLogin = true;//true
                     AttemptLogin attemptLogin = new AttemptLogin(); // Create a new login attempt
                     attemptLogin.execute(editName.getText().toString(), editPassword.getText().toString(), ""); // Execute the login attempt (Async)
                 }
@@ -71,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
+                Log.i(TAG, ACTIVITY_NAME + " " + methodName);
+
                 if (!waitingForLogin) {
                     waitingForLogin = true;
                     if(!accountCreated) {
@@ -78,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                         editEmail.setVisibility(View.VISIBLE);
                         btnSignIn.setVisibility(View.GONE);
                         btnRegister.setText("CREATE ACCOUNT");
+                        waitingForLogin = false;
                     } else {
                         // login
                         btnRegister.setText("REGISTER");
@@ -132,9 +145,7 @@ public class MainActivity extends AppCompatActivity {
                     // Check in the postExecute method if the “success” param is true.
                     if(result.getInt("success") == 1) {
                         saveInfo(result.getString("userName"));
-                        Intent myIntent = new Intent(MainActivity.this, MenuActivity.class);
-                        //myIntent.putExtra("key", value); //Optional parameters
-                        MainActivity.this.startActivity(myIntent);
+                        goToMenu();
                         Log.i(TAG, "Succesfull login");
 
                     }else{
@@ -156,8 +167,18 @@ public class MainActivity extends AppCompatActivity {
         prefEditor.putString("username",username);
         prefEditor.apply(); // Submit to file
     }
-    private void printSavedData(){
-        SharedPreferences sharePref = getSharedPreferences("user_info", Context.MODE_PRIVATE);
-        String username = sharePref.getString("username","");
+    private boolean getPreference(String file, String identifier){
+        SharedPreferences preferences = this.getSharedPreferences(file, Context.MODE_PRIVATE);
+        boolean value = preferences.getBoolean(identifier, false);
+        return value;
+    }
+    private String getPreference(String file, String identifier, boolean b){
+        SharedPreferences preferences = this.getSharedPreferences(file, Context.MODE_PRIVATE);
+        String value = preferences.getString(identifier, null);
+        return value;
+    }
+    private void goToMenu(){
+        Intent myIntent = new Intent(MainActivity.this, MenuActivity.class);
+        MainActivity.this.startActivity(myIntent);
     }
 }

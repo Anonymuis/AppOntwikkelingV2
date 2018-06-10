@@ -39,15 +39,7 @@ public class MenuItemDescriptionFragment extends Fragment {
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         Log.i(TAG, ACTIVITY_NAME + " " + methodName);
 
-        /*// ---- begin
-        Bundle bundle = getArguments();
-        if (bundle.getString(FragmentActionListener.KEY_SELECTED_MENU_ITEM, "Item1").equals("Item0")){
-            rootView = inflater.inflate(R.layout.fragment_menu_item_settings,container,false);
-            initUI();
-            return rootView;
-        }
-        // ---- end
-        */
+
 
         rootView = inflater.inflate(R.layout.fragment_menu_item_description,container,false);
         initUI();

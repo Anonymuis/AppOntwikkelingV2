@@ -13,10 +13,10 @@
     </string-array>
 
     <string name="Item1">
-        1
+        Welkom bij Item 1!
     </string>
     <string name="Item2">
-        2
+        Hoi :)
     </string>
     <string name="Item3">
         3
@@ -36,5 +36,6 @@
     <string name="Item8">
         8
     </string>
+    <string name="buttonLogout">Logout</string>
 
 </resources>

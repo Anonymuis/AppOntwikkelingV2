@@ -1,6 +1,7 @@
 package dekoning.jos.appontwikkelingv2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
@@ -44,16 +46,6 @@ public class MenuItemSettingsFragment extends Fragment {
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         Log.i(TAG, ACTIVITY_NAME + " " + methodName);
 
-        /*// ---- begin
-        Bundle bundle = getArguments();
-        if (bundle.getString(FragmentActionListener.KEY_SELECTED_MENU_ITEM, "Item1").equals("Item0")){
-            rootView = inflater.inflate(R.layout.fragment_menu_item_settings,container,false);
-            initUI();
-            return rootView;
-        }
-        // ---- end
-        */
-
         rootView = inflater.inflate(R.layout.fragment_menu_item_settings,container,false);
         initUI();
         return rootView;
@@ -72,6 +64,7 @@ public class MenuItemSettingsFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView1, boolean isChecked) {
                 switch1State = switch1.isChecked();
                 saveSwitchStates();
+                setPreference("pref", "stay_logged_in", switch1State);
             }
         });
         switch2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -84,6 +77,16 @@ public class MenuItemSettingsFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView3, boolean isChecked) {
                 switch3State = switch3.isChecked();
                 saveSwitchStates();
+            }
+        });
+        Button logoutButton = rootView.findViewById(R.id.logoutButtonID);
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                setPreference("pref", "stay_logged_in", false);
+                Intent myIntent = new Intent(getActivity(), MainActivity.class);
+                //myIntent.putExtra("key", value); //Optional parameters
+                startActivity(myIntent);
             }
         });
 
@@ -193,5 +196,18 @@ public class MenuItemSettingsFragment extends Fragment {
         SharedPreferences preferences = this.getActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
         String value = preferences.getString("username", "defaultValue");
         return value;
+    }
+
+    private void setPreference(String file, String identifier, String value){
+        SharedPreferences sharePref = this.getActivity().getSharedPreferences(file, Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = sharePref.edit();
+        prefEditor.putString(identifier, value);
+        prefEditor.apply(); // Submit to file
+    }
+    private void setPreference(String file, String identifier, boolean value){
+        SharedPreferences sharePref = this.getActivity().getSharedPreferences(file, Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = sharePref.edit();
+        prefEditor.putBoolean(identifier, value);
+        prefEditor.apply(); // Submit to file
     }
 }
