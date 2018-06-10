@@ -41,7 +41,11 @@ public class JSONParser {
     // by making HTTP POST or GET mehtod
     public JSONObject makeHttpRequest(String url, String method,
                                       ArrayList<NameValuePair> params) {
-
+        InputStream is = null;
+        JSONObject jObj = null;
+        JSONArray jArr = null;
+        String json = "";
+        String error = "";
         // Making HTTP request
         try {
 
@@ -109,8 +113,8 @@ public class JSONParser {
         }
 
         // return JSON String
+        json = "";
         return jObj;
-
     }
 
     private String convertStreamToString(InputStream is) throws Exception {

@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
 
     boolean waitingForLogin = false;
 
+    boolean isBackButton = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         URL = this.getResources().getString(R.string.server_address);
@@ -68,6 +70,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
                 Log.i(TAG, ACTIVITY_NAME + " " + methodName);
+
+                if(isBackButton){
+                    btnSignIn.setText("SIGN IN");
+                    editEmail.setVisibility(View.GONE);
+                    isBackButton = false;
+                    return;
+                }
+
+
                 if (!waitingForLogin) {
                     waitingForLogin = true;//true
                     AttemptLogin attemptLogin = new AttemptLogin(); // Create a new login attempt
@@ -86,13 +97,19 @@ public class MainActivity extends AppCompatActivity {
                 if (!waitingForLogin) {
                     waitingForLogin = true;
                     if(!accountCreated) {
+                        //-----
+                        isBackButton = true;
+                        btnSignIn.setText("Back");
+                        // ____
                         accountCreated = true;
                         editEmail.setVisibility(View.VISIBLE);
-                        btnSignIn.setVisibility(View.GONE);
+                     //---   btnSignIn.setVisibility(View.GONE);
                         btnRegister.setText("CREATE ACCOUNT");
                         waitingForLogin = false;
                     } else {
                         // login
+                        btnSignIn.setText("SIGN IN");
+
                         btnRegister.setText("REGISTER");
                         editEmail.setVisibility(View.GONE);
                         btnSignIn.setVisibility(View.VISIBLE);
