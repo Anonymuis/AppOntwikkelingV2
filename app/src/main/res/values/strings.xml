@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">AppOntwikkelingV2</string>
+
+    <string-array name="menuItems">
+        <item>Item1</item>
+        <item>Item2</item>
+        <item>Item3</item>
+        <item>Item4</item>
+        <item>Item5</item>
+        <item>Item6</item>
+        <item>Item7</item>
+        <item>Item8</item>
+    </string-array>
+
+    <string name="Item1">
+        1
+    </string>
+    <string name="Item2">
+        2
+    </string>
+    <string name="Item3">
+        3
+    </string>
+    <string name="Item4">
+      4
+    </string>
+    <string name="Item5">
+        5
+    </string>
+    <string name="Item6">
+       6
+    </string>
+    <string name="Item7">
+        7
+    </string>
+    <string name="Item8">
+        8
+    </string>
+
+</resources>
